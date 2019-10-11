@@ -1,0 +1,51 @@
+version: "3.7"
+
+services:
+# mm=multipartymeeting
+# mm-sipgw
+  mm-sipgw:
+    env_file: .env
+    image: misi/mm-sipgw:${TAG}
+    build:
+      args:
+        - BASEDIR=${BASEDIR}
+        - MM_SIPGW=${MM_SIPGW}
+        - NODE_ENV=${NODE_ENV}
+        - SERVER_DEBUG=${SERVER_DEBUG}
+      context: ./
+    restart: on-failure
+    volumes:
+      - ${PWD}/configs/sipgw:${BASEDIR}/${MM_SIPGW}/config
+    network_mode: "host"
+    stdin_open: true
+    tty: true
+  kurento:
+    image: kurento/kurento-media-server
+    restart: on-failure
+    environment:
+      - GST_DEBUG=5,rtp*:5
+    volumes:
+      - ${PWD}/configs/kurento/waiting.mp4:/usr/share/kurento/waiting.mp4
+      - ${PWD}/configs/kurento/notify.mp3:/usr/share/kurento/notify.mp3
+      - ${PWD}/configs/kurento/kurento-media-server:/etc/default/kurento-media-server
+      - ${PWD}/configs/kurento/etc:/etc/kurento/
+    ports:
+      - "8888:8888"
+      - "50000-50100:50000-50100"
+    network_mode: "host"
+    stdin_open: true
+    tty: true
+  drachito:
+    image: drachtio/drachtio-server
+    restart: on-failure
+    volumes:
+      - ${PWD}/configs/drachito:/config
+    ports:
+      - "9022:9022"
+      - "5060:5060/udp"
+      - "5060:5060/tcp"
+      - "5061:5061/tcp"
+    network_mode: "host"
+    stdin_open: true
+    tty: true
+

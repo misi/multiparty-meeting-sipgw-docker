@@ -1,0 +1,22 @@
+{
+	"Drachtio": {
+		"host"   : "127.0.0.1",
+		"port"   : 9022,
+		"secret" : "cymru"
+	},
+	"Kurento": {
+		"uri"             : "ws://127.0.0.1:8888/kurento",
+		"waitingVideoUrl" : "file:///usr/share/kurento/waiting.mp4",
+		"notificationUrl" : "file:///usr/share/kurento/notify.mp3"
+	},
+	"Mediasoup": {
+		"requestTimeout"   : 10000,
+		"transportOptions" :
+		{
+			"tcp" : false
+		}
+	},
+	"Room": {
+		"socketUrl"     : "https://mm.lab.vvc.niif.hu:443"
+	}
+}
